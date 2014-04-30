@@ -1,7 +1,6 @@
 # Hausaufgabe 04
-# Phillip Alday <phillip.alday@staff.uni-marburg.de>
-# 2014-04-30
-# Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
+# Anne Dobler <doblera@students.uni-marburg.de>
+# Diese Lizens darf weiter als Beispiel verwendet werden. 
 
 # Sie sollten die Datei auch in Ihren Ordner kopieren und einen Commit machen, 
 # bevor Sie die Kopie weiter anpassen! Vergessen Sie dabei nicht, Namen, Datum 
@@ -16,6 +15,6 @@ library(ggpplot2)
 
 # und danach die Daten:
 # Laden Sie die Daten
-dat <- CODE_HIER ##
+dat <- read.table("Data/body_dim_long.tab",header=TRUE)
 
 # 
