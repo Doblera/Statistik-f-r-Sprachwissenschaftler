@@ -1,6 +1,6 @@
 # Hausaufgabe 04
 # Anne Dobler <doblera@students.uni-marburg.de>
-# 2014-05-01
+# 2014-05-02
 # Diese Datei darf weiter als Beispiel genutzt werden.
 
 # Sie sollten die Datei auch in Ihren Ordner kopieren und einen Commit machen, 
@@ -85,9 +85,10 @@ frauen <- subset(dat, sex=="f")
 #sollten Sie die Plots so machen, damit man einen Vergleich zwischen den Gruppen
 #ziehen kann. Dafür gibt es verschiedene Möglichkeiten; die Wahl bleibt Ihnen
 #überlassen. 
-height.grafik.basis <- ggplot(data=frauen,aes(x=height))
+height.grafik.basis <- ggplot(data=frauen,aes(x=major))
 frauen.studiengang.bw <- height.grafik.basis + geom_boxplot(aes(x=major,y=height))
 print(frauen.studiengang.bw)
+
 
 # Sehen die Studiengänge anders aus? Wir müssen hier noch relativ vorrsichtig
 # sein, weil die Gruppen *unbalanziert* sind, d.h. die Gruppen sind
@@ -95,19 +96,24 @@ print(frauen.studiengang.bw)
 
 # Die Studiengänge sehen unterschiedlich aus in ihrer Spannweite und Größe der Boxen,
 # was insofern verständlich, dass ihnen jeweils unterschiedliche Gruppengrößen zugrunde 
-# liegen. Die Mediane liegen noch relativ auf einem Niveau, bis auf eine Gruppe, die 
-# nur aus einer Person besteht. 
+# liegen. Die Mediane liegen noch relativ nah bei einander, bis auf eine Gruppe, die 
+# nur aus einer Person besteht. Die größte Streuung liegt im Studiengang Klinische 
+# Linguistik vor. Beim Studiengang Speech Science ist die Streuung, bis auf einen 
+# Ausreißer beispielsweise geringer. 
 
 # Wir können natürlich auch die Dichte anschauen:
 frauen.studiengang.dichte <- height.grafik.basis + geom_density((aes(x=height,color=major)))
 print(frauen.studiengang.dichte)
 
+
 # Haben Sie den gleichen Eindruck wie bei Box-Whisker bekommen? Unterscheiden
 # sich die Gruppen?
-# Man bekommt einen anderen Eindruck.Die Gruppen unterscheiden sich in ihren Kurven.
+# Man sieht auch hier, dass sich die Gruppen unterscheiden. Die höchste Dichte ist 
+# wiederum bei ca. 168 cm. Dies ist ähnlich dem Median. 
 
 # Welche Gruppe hat gefehlt? Wie viele Datenpunkte gab es für die Gruppe?
-# Es fehlt die Gruppe Germanistische Linguistik, weil es nur einen Datenpunkt gab
+# Es fehlt die Gruppe Germanistische Linguistik und Other, weil es jweils nur einen 
+# bzw. zwei Datenpunkten gab, was zu wenig ist, um eine Dichtedarstellung zu geben.
 
 # Wir können auch die verschiedenen Maße der Streuung berechnen.
 # In R gibt es oft verschiedene Möglichkeiten, etwas zu machen. Wir haben bisher
@@ -116,7 +122,7 @@ print(frauen.studiengang.dichte)
 klinisch <- frauen[frauen$major == "M.A..Klinische.Linguistik",]
 print(klinisch)
 
-# Das sieht erstmal sehr vervwirrend aus, ist es aber nicht. Die eckigen
+# Das sieht erstmal sehr verwirrend aus, ist es aber nicht. Die eckigen
 # Klammern bestimmen die Auswahl an Elementen. Wir haben das ja bei Indizen in
 # Vektoren schon gesehen. Man kann eigentlich Indizen oder logische
 # Einschränkungen nutzen, und das gleiche gilt für Data Frames. Bei Data Frames
@@ -130,6 +136,7 @@ print(klinisch)
 # Jetzt brauchen wir die Teilmenge für die anderen beiden Studiengänge, 
 # Linguistik Kognition und Kommunikation und Speech Science
 # HINT: wie sehen die Namen aus bzw. wie werden sie im data frame buchstabiert?
+
 linkk <- frauen[frauen$major == "M.A..Linguistik.Kognition.und.Kommunikation",]
 speech <- frauen[frauen$major == "M.A..Speech.Science",] 
 
@@ -137,16 +144,47 @@ speech <- frauen[frauen$major == "M.A..Speech.Science",]
 # Gruppen. Sie können auch weitere Zeilen hinzufügen, wenn es Ihnen so leichter
 # ist. 
 # HINT: Formel und Beispiel für die Berechnung auf den Folien!
-#klinisch.sd <- CODE_HIER
-# x<-c(klinisch[2])
 
+# Klinische Linguistik
 
+x <- (klinisch$height)
+abweichung.klinisch <- x - mean(x)
+quadr.abweichung.klinisch <- abweichung.klinisch^2
+varianz.x <- mean(quadr.abweichung.klinisch)
+print(varianz.x)
 
+klinisch.sd <- sqrt(varianz.x)
+print(klinisch.sd)
 
-#linkk.sd <- CODE_HIER
-#speech.sd <- CODE_HIER
+# Linguistik Kognition und Kommunikation
+
+y <- (linkk$height)
+abweichung.linkk <- y - mean(y)
+quadr.abweichung.linkk <- abweichung.linkk^2
+varianz.y <- mean(quadr.abweichung.linkk)
+print(varianz.y)
+
+linkk.sd <- sqrt(varianz.y)
+print(linkk.sd)
+
+# Speech Science
+
+z <- (speech$height)
+abweichung.speech <- z - mean(z)
+quadr.abweichung.speech <- abweichung.speech^2
+varianz.z <- mean(quadr.abweichung.speech)
+print(varianz.z)
+
+speech.sd <- sqrt(varianz.z)
+print(speech.sd)
+
 
 # Berichten Sie jetzt die Mittelwerte und Standardabweichungen für die drei Gruppen. Die erste Gruppe steht hier als Muster:
 #print( paste("Studiengang: Klinische Linguistik","Mean:",mean(klinisch$height),"SD:",klinisch.sd) )
-#CODE_HIER
+# Klinische Linguistik
+print( paste("Studiengang: Klinische Linguistik","Mean:",mean(klinisch$height),"SD:",klinisch.sd))
+# Linguistik Kognition und Kommunikation
+print( paste("Studiengang: M.A..Linguistik.Kognition.und.Kommunikation","Mean:",mean(linkk$height),"SD:",linkk.sd))
+# Speech science
+print( paste("Studiengang: M.A..Speech.Science","Mean:",mean(speech$height),"SD:",speech.sd))
 
