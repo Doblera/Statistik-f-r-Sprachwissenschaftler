@@ -1,6 +1,7 @@
 % Hausaufgabe 07
-% Phillip Alday <phillip.alday@staff.uni-marburg.de>
-% 2014-05-07
+% Anne Dobler <doblera@students.uni-marburg.de>
+% 2014-05-08
+# Diese Datei darf weiter als Beispiel genutzt werden.
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
 
@@ -84,15 +85,20 @@ for(s in c(3,4,5) ){
 
 Aber wir hoffen alle, dass wir doch eine gute Note bekommen. Fügen Sie einen Code-Block hier ein, der das gleiche aber mit "ausgezeichneten" Noten (=1 bzw. >= 13) macht. (Bei evtl. Copy-Paste nicht vergessen, "fallen...durch" durch etwas Passendes zu ersetzen!)  
 
-code_block_hier
+
+for(s in c(3,4,5) ){
+  ausgezeichnet <-  pnorm(13,mean=mu,sd=s,lower.tail=FALSE)
+  output <- paste("Bei einer Standabweichung von",s, "haben",ausgezeichnet*100,"% ausgezeichnete Noten.")
+  print(output)
+}
 
 Wie steht die Anzahl guter Noten in Beziehung zur Anzahl schlechter Noten? 
 
-antwort_hier
+Die Prozentzahlen guter Noten ist jeweils geringer als die schlechter Noten.
 
 Warum?
 
-antwort_hier
+Dies liegt daran, dass die Gruppe kleiner ist (lediglich diejenigen mit Notenwert 13, 14 und 15) als diejenigen, die durchfallen (alle mit Notenwert 1,2,3,4)
 
 ## Kurtosis und Schiefe
 Kurtosis (im Deutschen auch *Wölbung*) ist ein Maß dafür, wie spitz eine Verteilung ist. Die Normalverteilung wird nie zu extrem spitz -- der Gipfel bleibt immer schön rund, obwohl er manchmal eng wird. Andere Verteilungen (z.B. die Laplace-Verteilung ) haben Gipfel, die nicht rund sind.   
@@ -101,7 +107,7 @@ Schiefe (*skewness*) beschriebt die (A)Symmetrie einer Verteilung. Eine Verteilu
 
 Die Verteilung von Noten ist oft schief mit mehr guten Noten. Ist die Verteilung rechts- oder linksschief?
 
-antwort_hier
+Die Kurve ist linksschief. 
 
 Vielleicht hilft folgende Grafik mit der Visualisierung:
 
@@ -120,7 +126,7 @@ noten.dist
 
 Jetzt können wir die absoluten Häufigkeiten auch plotten:
 
-code_block_hier
+ggplot(data=noten.dist,aes(x=Notenpunkte,y=Anzahl,color=Standardabweichung)) + geom_line() + scale_x_continuous(limits=c(0,16))
 
 Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-Code einsetzen:
 
@@ -132,15 +138,15 @@ Beantworten Sie ein paar Fragen über die Verteilung, indem Sie den passenden R-
 
 2. Wie viele Studenten bekommen zumindest 10 NP?
 
-    `code_hier` Studenten bekommen zumindest 10 Notenpunkte.
+    `r pnorm(10,mean=mu,sd=3,lower.tail=FALSE) * n` Studenten bekommen zumindest 10 Notenpunkt.
 
 3. Wie viele Studenten bekommen weniger als 10 NP?
 
-    `code_hier` Studenten bekommen weniger als 10 Notenpunkte.
+    `r pnorm(10,mean=mu,sd=3) * n` Studenten bekommen weniger als 10 Notenpunkte.
 
 4. Wie viele Studenten bekommen weniger als 8 NP?
 
-    `code_hier` Studenten bekommen weniger als 8 Notenpunkte.
+    `r pnorm(8,mean=mu,sd=3) * n` Studenten bekommen weniger als 8 Notenpunkte.
 
 
 (Die Einrückung mit 4 Leerschlägen ist die Syntax für mehrere Absätze pro Punkt auf der Liste.)
@@ -152,29 +158,31 @@ Um überdurchschnittlich zu sein, muss man mehr als `r qnorm(0.5,mean=mu,sd=3)` 
 
 Nicht so überraschend, dass "überdurchschnittlich" auch "mehr Punkte als den Durchschnitt bekommen" heißt! Wie sieht es aus, wenn wir besser als 99% der anderen abschließen möchten?
 
-Um in dem besten 1% abzuschließen, muss man zumindest `code_hier` Notenpunkte bekommen.
+Um in dem besten 1% abzuschließen, muss man zumindest `r qnorm(0.99,mean=mu,sd=3)´ Notenpunkte bekommen.
 
 ## z-Transformation
 Bei der Überprüfung der Lehrqualität scheint es der Verwaltung, dass ein gewisser Dozent andere Noten als andere Dozenten vergibt. Es wird entschieden, dass der Notenspiegel bei den Teilnehmern in einem von seinen Kursen getestet wird, um zu schauen, ob er sich von signifikant von der idealisierten Notenverteilung ($\mu=8,\sigma=3$) unterscheidet. Um zu zeigen, dass Gott $\alpha=0.06$ so viel liebt wie $\alpha=0.05$ `r citep("10.1037/0003-066X.44.10.1276")`, setzt die Verwaltung das Signikanzniveau auf 0.06. 
 
-Der kritische Wert für einen einseitigen $z$-Test ist `code_hier`.
+Der kritische Wert für einen einseitigen $z$-Test ist `qnorm(0.94)`.
 
-Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$`code_hier`.
+Die kritischen Werte für einen zweiseitigen $z$-Test sind $\pm$`qnorm(0.97)`.
 
 ### Gibt es einen Unterschied?
 Bei diesem Dozenten ist die Verwaltung wirklich unsicher, ob und was für einen Unterschied es geben könnte. (Welche Testart sollte man hier nutzen?)
 
 In einem kleinen Seminar mit 7 Studenten beträgt der Durchschnittswert 10. Unterscheidet sich der Notenspiegel von dem idealen? Berechnen Sie den $z$-Test:
 
-code_hier
+z.7 <- sqrt(7) * ((10-8)/3)
+print(z.7)
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein **insignifikanter** Unterschied. 
 
 In einer Vorlesung vom selben Dozenten mit 50 Teilnehmern beträgt der Durchschnittswert wieder 10. (Es scheint, dass der Dozent 10 besonders toll findet.) Berechnen Sie den $z$-Test:
 
-code_hier
+z.50 <- sqrt(50) * ((10-8)/3)
+print(z.50)
 
-Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
+Das ist ein **signifikanter** Unterschied. 
 
 Ist die Benotung vom Dozenten weniger als ideal? 
 
@@ -185,7 +193,8 @@ In einem mittelgroßen Seminar mit 20 Studenten beträgt der Durchschnittswert 7
 
 Berechnen Sie den $z$-Test:
 
-code_hier
+z.20 <- sqrt(20) * ((7-8)/3)
+print (z.20)
 
 Das ist ein **_eins_von_signifikanter_insignifikanter_** Unterschied. 
 
