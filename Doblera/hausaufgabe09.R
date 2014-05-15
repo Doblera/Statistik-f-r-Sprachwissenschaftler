@@ -70,26 +70,40 @@ print(rt.plot)
 # Sie von vorneherein etwas behaupten haben.
 
 # Berechnen Sie jetzt den F-Test:
-#print(CODE_HIER)
+
+
+subj1<-rt[rt$subj== "1", "RT"]
+subj2<-rt[rt$subj== "2", "RT"]
+
+var.test(subj1,subj2)
+print(var.test(subj1,subj2))
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # F-Test "Varianzen Ungleich" ist.
+Die Varianzen sind 
 
 # Berechenen Sie den Levene Test:
-#print(CODE_HIER)
+
+rt.Gruppen <- rt[rt$subj == "1" | rt$subj == "2", c("subj","RT")] 
+print(rt.Gruppen)
+
+leveneTest(rt.Gruppen$RT ~ rt.Gruppen$subj)
+
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # Levene Test "Varianzen Gleich" ist.
+
 
 # Für heterogene Varianzen haben wir eine Variante des  t-Tests gesehen, die
 # eine Korrektur der Freiheitsgerade macht. Bei homogener Varianz sollten beide
 # Variante ähnliche bzw. (fast) gleiche Ergebnisse liefern. Ist das hier der
 # Fall?
-# two.sample <- CODE_HIER
-# welch <- CODE_HIER
 
-# print(two.sample)
-# print(welch)
+two.sample <-t.test(subj1,subj2,var.equal=TRUE)
+welch <- t.test(subj1,subj2)
+
+print(two.sample)
+print(welch)
 
 # Das Ergebnis der verschiedenen Test-Funktionen in R ist übrigens eine Liste.
 # Wir können das ausnutzen, um zu schauen, ob es einen Unterschied zwischen den
