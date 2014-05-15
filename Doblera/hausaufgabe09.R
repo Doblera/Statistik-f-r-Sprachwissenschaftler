@@ -80,7 +80,7 @@ print(var.test(subj1,subj2))
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # F-Test "Varianzen Ungleich" ist.
-Die Varianzen sind 
+#Die Daten sind homogen, da die Nullhypothese "Varianzen ungleich" abgelehnt wird. 
 
 # Berechenen Sie den Levene Test:
 
@@ -93,6 +93,7 @@ leveneTest(rt.Gruppen$RT ~ rt.Gruppen$subj)
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # Levene Test "Varianzen Gleich" ist.
 
+# Auch hier sind die Varianzen homogen.
 
 # Für heterogene Varianzen haben wir eine Variante des  t-Tests gesehen, die
 # eine Korrektur der Freiheitsgerade macht. Bei homogener Varianz sollten beide
@@ -114,7 +115,7 @@ print(paste("Die Differenz zwischen den beiden t-Werten ist",t.diff,"."))
 
 # Sind die Daten normal verteilt? Wir berechnen Sie den Shapiro Test für erste Versuchsperson:
 shapiro <- shapiro.test(rt[rt$subj==1,"RT"])
-# 
+
 print(shapiro)
 
 # Wir können auch "Entscheidungen" im Code treffen. Die Syntax dafür ist wie
@@ -150,16 +151,35 @@ print(logrt.plot)
 # Daten. Nach jedem Test sollten Sie auch programmatisch (=durch if-Blöcke)
 # ausdrücken, ob die Varianzen homogen sind.
 
+# F-Test
+
 subj1_log.rt<-rt[rt$subj== "1", "logRT"]
 subj2_log.rt<-rt[rt$subj== "2", "logRT"]
 
-var.test(subj1_log.rt,subj2_log.rt)
-print(var.test(subj1_log.rt,subj2_log.rt))
+log_F<-var.test(subj1_log.rt,subj2_log.rt)
+print(log_F)
 
-if (vart.test$p.value > 0.05){
-  print("F test .")
+if (log_F$p.value > 0.05){
+  print("Der F-Test ist insignifikant, die Varianzen der Gruppen sind ungleich.")
 }else{
-  print("F test .")
+  print("Der F-Test ist signifikant, die Varianzen der Gruppen sind gleich.")
+}
+
+# Levene Test
+
+log_rt <- rt[rt$subj == "1" | rt$subj == "2", c("subj","logRT")]
+print(log_rt)
+
+log_levene<- leveneTest(log_rt$logRT ~ log_rt$subj)
+print(log_levene)
+
+
+
+
+if (log_levene$Pr > 0.05){
+  print("Levene-Test ist insignifikant, die Varianzen der Gruppen sind gleich.")
+}else{
+  print("Levene-Test ist signifikant, die Varianzen der Gruppen sind nicht gleich.")
 }
 
 # Sind die Daten "normaler" gewordern? Berechnen Sie den Shapiro-Test für beide 
@@ -189,6 +209,12 @@ if (shapiro_log_2$p.value > 0.05){
 # Schluss den (Welch) t-Test für die logarithmischen Daten. Bekommen Sie das
 # gleiche Ergebnisse wie bei den Ausgangsdaten?
 
-welch <- t.test(subj1_log.rt,subj2_log.rt)
 
-print(welch)
+subj1_log<-rt[rt$subj== "1", "logRT"]
+subj2_log<-rt[rt$subj== "2", "logRT"]
+welch_log <- t.test(subj1_log.rt,subj2_log.rt)
+
+print(welch_log)
+# Nein, die Ergebnisse sind nicht genau gleich wie bei den Ausgangsdaten. Der
+# p-Wert ist etwas größer, die Signifikanz etwas geringer. 
+
