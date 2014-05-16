@@ -128,8 +128,8 @@ print("Shapiro's test signikant, die Daten sind nicht normal verteilt.")
 
 # Berechnen Sie Shapiro's Test für die andere Versuchsperson und drücken Sie mit
 # einem if-Block aus, ob die Daten normal verteilt sind.
+
 shapiro_2 <- shapiro.test(rt[rt$subj==2,"RT"])
-# 
 print(shapiro_2)
 
 if (shapiro_2$p.value > 0.05){
