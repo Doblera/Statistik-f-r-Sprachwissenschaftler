@@ -208,7 +208,8 @@ if (shapiro_log_2$p.value > 0.05){
 # Schluss den (Welch) t-Test für die logarithmischen Daten. Bekommen Sie das
 # gleiche Ergebnisse wie bei den Ausgangsdaten?
 
-# 
+# Die Ergebnisse im Shapiro Test sind durch die Transformation nun umgedreht. 
+# Gruppe bzw. Subj. 1 ist nun nicht mehr normal verteilt.  
 
 
 subj1_log<-rt[rt$subj== "1", "logRT"]
