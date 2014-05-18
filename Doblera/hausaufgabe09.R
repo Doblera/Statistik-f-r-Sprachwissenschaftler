@@ -75,25 +75,26 @@ print(rt.plot)
 subj1<-rt[rt$subj== "1", "RT"]
 subj2<-rt[rt$subj== "2", "RT"]
 
-var.test(subj1,subj2)
-print(var.test(subj1,subj2))
+F<-var.test(subj1,subj2)
+print(F)
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
-# F-Test "Varianzen Ungleich" ist.
-#Die Daten sind homogen, da die Nullhypothese "Varianzen ungleich" abgelehnt wird. 
+# F-Test "Varianzen gleich" ist.
+
+# Die Daten sind sind nicht gleich. 
 
 # Berechenen Sie den Levene Test:
 
 rt.Gruppen <- rt[rt$subj == "1" | rt$subj == "2", c("subj","RT")] 
 print(rt.Gruppen)
 
-leveneTest(rt.Gruppen$RT ~ rt.Gruppen$subj)
-
+Levene<-leveneTest(rt.Gruppen$RT ~ rt.Gruppen$subj)
+print(Levene)
 
 # Sind die Varianzen homogen? Vergessen Sie nicht, dass die Nullhypothese beim
 # Levene Test "Varianzen Gleich" ist.
 
-# Auch hier sind die Varianzen homogen.
+# Die Varianzen sind homogen.
 
 # Für heterogene Varianzen haben wir eine Variante des  t-Tests gesehen, die
 # eine Korrektur der Freiheitsgerade macht. Bei homogener Varianz sollten beide
@@ -105,6 +106,8 @@ welch <- t.test(subj1,subj2)
 
 print(two.sample)
 print(welch)
+
+# Die Ergebnisse sind sehr ähnlich. 
 
 # Das Ergebnis der verschiedenen Test-Funktionen in R ist übrigens eine Liste.
 # Wir können das ausnutzen, um zu schauen, ob es einen Unterschied zwischen den
@@ -160,9 +163,9 @@ log_F<-var.test(subj1_log.rt,subj2_log.rt)
 print(log_F)
 
 if (log_F$p.value > 0.05){
-  print("Der F-Test ist insignifikant, die Varianzen der Gruppen sind ungleich.")
+  print("Der F-Test ist insignifikant, die Varianzen der Gruppen sind gleich.")
 }else{
-  print("Der F-Test ist signifikant, die Varianzen der Gruppen sind gleich.")
+  print("Der F-Test ist signifikant, die Varianzen der Gruppen sind ungleich.")
 }
 
 # Levene Test
