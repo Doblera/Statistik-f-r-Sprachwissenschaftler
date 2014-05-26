@@ -1,0 +1,378 @@
+Statistik für Sprachwissenschaftler
+========================================================
+author: Phillip M . Alday
+date: 2014-05-19
+autosize: false
+
+
+
+
+
+Aufwachen und sich errinnern!
+====================================
+type: section
+
+Bisher
+========
+- frequentistischer Vergleich von Gruppen ($t$-Test)
+- Andeutungen zu Confidence-Intervalen
+- Andeutungen zu [BEST](http://www.indiana.edu/~kruschke/BEST/) (etwa bayes'scher $t$-Test) und Credible-Intervale  
+
+Heute
+=======
+- Mehr zu Git
+- QQPlots
+- Confidence Intervale & frequentistische Inferenz
+- Optional Stopping
+- Credible Intervale (HDI) und bayes'sche Inferenz, BEST
+
+Datensätze für heute: Aphasiker und RT
+==========================================
+
+```r
+> aphasiker <- read.csv2("Data/aphasiker.csv", header = T)
+> rt <- read.table("Data/punkt_rt.tab", header = T)
+> rt$subj <- as.factor(rt$subj)
+```
+
+
+
+
+
+Datensätze für heute: Hilfsvariablen 
+================================
+
+```r
+> broca.lex.dec <- aphasiker[aphasiker$Aphasie == "B", "Lex_Dec"]
+> wernicke.lex.dec <- aphasiker[aphasiker$Aphasie == "W", "Lex_Dec"]
+> rt1 <- rt$RT[rt$subj == 1]
+> rt2 <- rt[rt$subj == 2, ]$RT
+```
+
+
+Datensatz für heute: Aphasiker
+================================
+
+```
+## Warning: Removed 1 rows containing non-finite values (stat_density).
+```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4.png) 
+
+
+Datensatz für heute: RT
+================================
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+
+
+QQ Plots: Vergleich mit der Normalverteilung
+==============================================
+
+```r
+> qqnorm(broca.lex.dec)
+```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+
+
+
+QQ Plots: Vergleich mit der Normalverteilung
+==============================================
+
+```r
+> qqnorm(wernicke.lex.dec)
+> qqline(wernicke.lex.dec)
+```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+
+
+QQ Plots: Vergelich mieinander
+=====================================
+
+```r
+> qqplot(broca.lex.dec, wernicke.lex.dec)
+```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+
+
+
+QQ Plots: Vergleich mit der Normalverteilung
+==============================================
+
+```r
+> qplot(sample = rt1, stat = "qq")
+```
+
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
+
+
+
+QQ Plots: Vergleich mit der Normalverteilung
+==============================================
+
+```r
+> ggplot() + stat_qq(aes(sample = rt1))
+```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+
+
+QQ Plots: Vergleich mit der Normalverteilung
+==============================================
+
+```r
+> ggplot(rt) + stat_qq(aes(sample = RT)) + facet_wrap(~subj)
+```
+
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
+
+
+Logarithmische Transformation
+===============================
+
+```r
+> ggplot(rt) + stat_qq(aes(sample = log(RT))) + facet_wrap(~subj)
+```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
+
+
+Confidence Intervale
+====================
+type:section
+
+The New Statistiics
+======================
+- Punktschätzungen (*point estimates*) problematisch wegen Unsicherheit 
+- $p$-Werte problematisch wegen ... und ein $p$-Wert = eine Punktschätzung
+- Effektgröße als tatsächliches Maß der erklärten Varianz
+- Confidence-Interval als Schätzungen mit expliziter (Un)Sicherheit
+
+vgl. <span class="showtooltip" title="Cumming G (2013). 'The New Statistics: Why And How.' Psychological Science, 25, pp. 7-29. ISSN 0956-7976."><a href="http://dx.doi.org/10.1177/0956797613504966">Cumming (2013)</a></span> und viele Andere
+
+Plotting und Effektgröße
+=========================
+Besessenheit mit $p$-Werten kostet Leben!
+
+Effektgröße und Grafiken retten Leben!
+
+[Mammographie und Brustkrebs](http://andrewgelman.com/2014/05/03/graph-clearly-shows-mammography-adds-virtually-nothing-survival-anything-decreases-survival-increases-cost-provides-unnecessary-treatment/)
+
+Statistische Fehler
+====================
+- **Type S**: Sign error (Vorzeichnenfehler)
+- **Type M**: Magnitude Error (Größenfehler)
+
+Quelle: [Andrew Gelman](http://andrewgelman.com/2004/12/29/type_1_type_2_t/)
+
+(95%) Confidence Intervale
+===========================
+incremental: true
+- Bereich so berechnet, dass er in 95% solcher Experimente den wahren (Populations)wert enthält.
+- Bereich, wo $p < 0.05$ wäre
+- Bereich, wo 95% aller gleich geschätzten Mittelwerte fallen würden
+- Ungenauigkeit in der Messung durch usere Stichprobe und ihre beschränkte $n$ 
+- Variante für Unterschiede in Mittelwerten, Mittelwerte, und ganz viele andere Parameter
+
+(95%) Confidence Intervale
+===========================
+incremental: true
+- intuitiv "klar" 
+- Unsicherheitsbereich der Messung
+- genaue Bedeutung (sowie bei $p$-Werten) schwierig
+- Hören Sie genau hin -- ich mache bestimmt einen Fehler!
+
+Confidence Intervale
+====================
+type: prompt
+
+Confidence Intervale: Berechnung
+=================================
+- analytisch: Mittelwert $\pm$ 1.96 SD
+- Bootstrapping: Resampling Verfahren um mehrere Mittelwertsschätzungen zu bekommen 
+- normalerweise relativ nah aneinander
+
+Übrigens
+==========
+
+```r
+> t.test(rt1)
+```
+
+```
+## 
+## 	One Sample t-test
+## 
+## data:  rt1
+## t = 7.991, df = 9, p-value = 2.234e-05
+## alternative hypothesis: true mean is not equal to 0
+## 95 percent confidence interval:
+##  150.9 270.1
+## sample estimates:
+## mean of x 
+##     210.5
+```
+
+
+Frequentismus
+===============
+- Aussagen über die Vorkommenshäufigkeit über (unendliche) Wiederholungen
+- keine Aussage über ein einzelnes Ergebnise, sondern nur seine Häufigkeit über mehrfache Wiederholungen
+- Annahmen dazu über:
+  - Unabhängigkeit der Tests
+  - Anzahl der Tests 
+- Verletzung der Annahmen durch:
+  - Multiples Testen (*multiple comparison*)
+  - Optional Stopping
+- [Problematik oft nicht bewusst!](http://www.stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf)
+
+Confidence Intervale
+====================
+> An exact 95% confidence interval is calculated such that it includes the true value of the estimated parameter 95% of the time. We do not know, however, if the interval we have is one of those that are correct or not. It is like a person who tells the truth 95% of the time, but we do not know whether a particular statement is true or not.
+
+<span class="showtooltip" title="Behar R, Grima P and Marco-Almagro L (2013). 'Twenty-Five Analogies For Explaining Statistical Concepts.' The American Statistician, 67, pp. 44-48. ISSN 0003-1305."><a href="http://dx.doi.org/10.1080/00031305.2012.752408">Behar et al. (2013)</a></span>
+
+The New Statistics
+====================
+
+[![Quelle: xkcd](http://imgs.xkcd.com/comics/null_hypothesis.png)](http://www.xkcd.com/892/)
+
+Ist der Vergleich mit der Null sinnvoll? Auch CIs nutzen die Null.
+
+Optional Stopping
+====================
+- Optional Stopping ist eine Art multiples Testing.
+- Mit $\alpha=0.05$ bekommt man [1 von 20 mal ein falsches Positiv](http://xkcd.com/882/) 
+- Auch CIs dafür anfällig
+- vgl. <span class="showtooltip" title="Simmons J, Nelson L and Simonsohn U (2011). 'False-Positive Psychology: Undisclosed Flexibility in Data Collection And Analysis Allows Presenting Anything as Significant.' Psychological Science, 22, pp. 1359-1366. ISSN 0956-7976."><a href="http://dx.doi.org/10.1177/0956797611417632">Simmons et al. (2011)</a></span> und viele andere
+
+Optional Stopping
+====================
+
+> Stopping for extreme data precludes subsequent collection of compensating data
+
+Quelle: [John Krusche](https://www.youtube.com/watch?feature=player_detailpage&v=OIX6d2YEB04#t=348)
+
+Es ist immer möglich (obleich bei ausreichender $n$ nicht unbedingt wahrscheinlich), einen $p$-Wert über oder unten einen gewissen $alpha$-Wert zu bekommen.
+
+Optional Stopping
+====================
+type: prompt
+
+
+Credible Intervale
+====================
+type:section
+
+Bayes'sche Interferenz
+==========================
+- Wahrscheinlichkeit als Glaubwürdigkeit
+- Aussagen über Überzeugung
+- Aussagen in Form von Verteilungen
+
+Credible Intervale
+====================
+- Intervale, wo die meisten Parameterschätzungen fallen
+- zwei Arten: 
+  - symmetrische um das Zentrum (etwa bayes'sche Confidence Intervale)
+  - Highest Density Interval (HDI): das Interval mit der höchsten Dichte, *auch wenn es nicht symmetrisch ist!*
+- Aussage: wir glauben, der wahre Wert des Parameters liegt in diesem Bereich
+
+ROPE
+====
+- Region of Practical Equivalence
+- *keine* Verteilung
+- (Null-)Hypothese zurücklegen: das Credible Interval überlappt nicht mit die ROPE um den hypothetischen (Null)-Wert 
+- Hypothese annehmen: die ROPE um den hypothetischen (Null)-Wert liegt komplett innerhalb des Credible Intervals
+- ROPE schließt u.a. "signifikante" aber unbedeutsame Unterschiede aus (wieder Effektgröße)
+
+BEST
+=====
+- Vorteile:
+  - viele Parameter geschätzt
+  - wenig Annahmen über Verteilung der Daten
+  - sehr robust
+- Nachteile
+  - computionell aufwendiger
+  - weniger bekannt
+- [Interaktives Beispiel](http://www.sumsar.net/best_online/)
+
+Vergleich mit t-Test
+=====================
+
+```r
+> t.test(rt1, rt2)
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  rt1 and rt2
+## t = -3.514, df = 13.05, p-value = 0.003786
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -166.29  -39.71
+## sample estimates:
+## mean of x mean of y 
+##     210.5     313.5
+```
+
+
+
+BEST: in R
+============
+
+```r
+> library(BEST)
+> best <- BESTmcmc(rt1, rt2)
+> print(best)
+> print(summary(best))
+```
+
+
+Nicht ausführen, wenn Sie wenig Akku haben!
+
+The Goal is Precision
+======================
+> Can't I measure precision with a frequentist confidence interval instead of a Bayesian posterior HDI?" No, because a frequentist confidence interval depends on the stopping and testing intention. Change, say, the testing intention --e.g., there's a second coin you're testing-- and the confidence interval changes. But not the Bayesian HDI.
+
+Quelle: [John Kruschke](http://doingbayesiandataanalysis.blogspot.de/2013/11/optional-stopping-in-data-collection-p.html)
+
+Optional Stopping
+=================
+- bayes'sche Methoden z.T. auch dafür anfällig, wenn man von Hypothesen-Testing ausgeht
+- weniger so, wenn man von gewünschter Präzision ausgeht
+- s. dazu John Kruschkes Videos dazu:
+  - [Teil 1](https://www.youtube.com/watch?v=lh5btlAvrLs)
+  - [Teil 2](https://www.youtube.com/watch?v=ObCrb5I49qo)
+  - [Teil 3](https://www.youtube.com/watch?v=OIX6d2YEB04)
+  - [Teil 4](https://www.youtube.com/watch?v=bKj5irH99OI)    
+
+Übrigens
+============
+Bedingte Wahrscheinlichkeit ist oft wichtig und natürlich:
+
+[![Quelle: xkcd](http://imgs.xkcd.com/comics/conditional_risk.png)](http://xkcd.com/795/)
+
+Hausaufgabe
+===========
+- Sinn des $F$-Tests als Varianzvergleich verstehen
+- die einfache Überlegungen hinter den bisherigen Tests verstehen:
+  - Prüfgröße $ =  \frac{\text{Beo} - \text{Theo}}{s_\text{Beo}}$
+  - Vergleich der Prüfgröße mit einer Referenzverteilung 
+  - Abhängige Variable = Model der Unabhängigen Variable + Fehler
+
+Bibliography
+=============
+
+
+<span style="font-size: 10%;">
+
+- Roberto Behar, Pere Grima, Lluís Marco-Almagro,   (2013) Twenty-Five Analogies For Explaining Statistical Concepts.  *The American Statistician*  **67**  44-48  [10.1080/00031305.2012.752408](http://dx.doi.org/10.1080/00031305.2012.752408)
+- G. Cumming,   (2013) The New Statistics: Why And How.  *Psychological Science*  **25**  7-29  [10.1177/0956797613504966](http://dx.doi.org/10.1177/0956797613504966)
+- J. P. Simmons, L. D. Nelson, U. Simonsohn,   (2011) False-Positive Psychology: Undisclosed Flexibility in Data Collection And Analysis Allows Presenting Anything as Significant.  *Psychological Science*  **22**  1359-1366  [10.1177/0956797611417632](http://dx.doi.org/10.1177/0956797611417632)
+
+</span>
