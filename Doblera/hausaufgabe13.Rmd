@@ -1,6 +1,6 @@
 % Hausaufgabe 13
 % Anne Dobler <doblera@students.uni-marburg.de>
-% 2014-05-28
+% 2014-05-31
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
 
@@ -90,6 +90,8 @@ print(xtable(priming.by.subject.wide2),type="html",include.rownames=FALSE)
 
 Welches Format macht am meisten Sinn?
 
+Das erstere Format macht meiner Meinung nach etwas mehr Sinn, da die Versuchspersonen vorangestellt sind und es somit etwas übersichtlicher ist. 
+
 Natürlich müssen wir auch die Daten grafisch darstellen:
 ```{r}
 ggplot(data=priming.by.subject) + geom_density(aes(x=RT,color=cond,fill=cond),alpha=0.3)
@@ -99,6 +101,8 @@ ggplot(data=priming.by.subject) + geom_boxplot(aes(x=cond,y=RT,color=cond,fill=c
 ```
 
 Sind alle Plots gleich gut?
+
+Bei der Darstellung der Dichte ist gut ersichtlich, wieviele Personen eine bestimmte Reaktionszeit haben und wo Häufungen auftreten. Ebenso ist dies bei der Geigenform sichtbar. 
 
 ### By Item
 Bei "Item" berechnen wir die Mittelwerte aller Trials innerhalb eines Items, d.h. wir nehmen den itemweise Mittelwert über Versuchpersonen hinweg. Dafür können wir `aggregate()` nutzen.
@@ -120,6 +124,7 @@ ggplot(data=priming.by.item) + geom_density(aes(x=RT,color=cond,fill=cond),alpha
 
 Sehen die Daten by Subject und by Item gleich aus? Wie sehen sie im Vergleich zu den Single-Trial-Daten aus?
 
+Bei der Darstellung by Item sehen die Kurven etwas anders aus und es lässt sich erkennen, dass beispielsweise DE eine deutlich länger Reaktionszeit hervorruft als DD. Bei den Single-Trial-Daten ähneln sich die Kurven. Die Reaktionszeiten sind in den verschiedenen Bedingungen ähnlicher, bei den Wiederholungen sind jedoch höhre Peaks in der der Condition DD zu erkennen. 
 
 
 # Subject- und Item-Analysen
