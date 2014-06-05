@@ -83,8 +83,11 @@ m3 <- lm(height.cm ~ weight.kg, data=women.metric)
 print(summary(m3))
 
 
+
 # Hat sich der R^2 Wert geändert? Die t-Werte? Die Koeffizienten? Was ist die
 # Beziehung zwischen diesem Modell und m2?
+
+# R^2 hat sich nicht verändert. Die T-Werte auch nicht.
 
 # Wie sieht es aus mit den Daten zum Kursteilnehmern? Plotten Sie und berechnen
 # Sie ein Modell für das Gewicht der Teilnehmer als Funktion von Körpergröße.
@@ -99,4 +102,5 @@ print(summary(mKurs))
 # Kursteilnehmerdaten? HINT: Lesen Sie die Hilfe-Beschreibung von women! 
 
 # Der Datensatz aus unserem Kurs ist im Gegensatz zu dem Datensatz women nicht 
-# eine repräsentative Stichprobe.
+# eine repräsentative Stichprobe.Im Kurs befanden sich neben den Frauen auch zwei
+# Männer, was mehr Heterogenität bewirken könnte. 
