@@ -59,7 +59,11 @@ Plotten der Daten
 ggplot(diamonds, aes(x=carat, y=price))+geom_point()
 ggplot(diamonds, aes(x=clarity, y=price))+geom_point()
 ggplot(diamonds, aes(x=carat, y=price, color=clarity))+ geom_point()
+ggplot(diamonds, aes(x=carat, y=price, color=clarity))+ geom_point()+facet_wrap(~color)
 ```
+
+Einen Zusammenhang zwischen Karat und Preis scheint es zu geben. Auch je höher die Klarheit, desto stärker steigt der Preis an. 
+
 
 Lineare Regression - Modell
 
@@ -68,6 +72,17 @@ lm <- lm(price~carat * clarity,data=diamonds)
 summary(lm)
 ```
 
+Karat erklärt viel Varianz (R^2 = 0.85)
+
+Bei den Werten zu Klarheit handelt es sich um nominalskalierte Daten. Sie müssen also um eine Regression zu machen, noch umgewandelt werden. 
+
+```{r}
+diamonds$clarity.neu <- as.numeric(diamonds$clarity)
+summary(lm(price~clarity.neu,data=diamonds))
+```
+Die Ergebnisse deuten darauf trotz vorheriger Annahmen nach der visuellen Analyse, dass Klarheit keinen großen Einfluss auf den Preis hat. R^2 ist mit 0.02 sehr gering. Es wird mit Klarheit nicht viel Varianz erklärt. 
+
+
 ANOVA für Karat/carat und Preis und für Klarheit/clarity und Preis
 
 ```{r}
@@ -75,9 +90,11 @@ ANOVA.Karat<-aov(price ~ carat, data=diamonds)
 ANOVA.Klarheit<-aov(price ~ clarity, data = diamonds)
 summary(ANOVA.Karat)
 summary(ANOVA.Klarheit)
+ANOVA.Klarheit
+ANOVA.Karat
 ```
 
-Karat erklärt mehr Varianz als Klarheit. 
+Karat erklärt mehr Varianz als Klarheit. Es ist ein besserer Indikator für den Preis. 
 
 
 ANOVA wegen Interaktionen
@@ -86,7 +103,8 @@ ANOVA.KaratundKlarheit<- aov(price~carat*clarity, data = diamonds)
 summary(ANOVA.KaratundKlarheit)
 ```
 
-
+Karat erklärt am meisten Varianz, aber auch Clarity und die Interaktion erklären auch einen Teil der Varianz. Dies steht im Widerspruch zur vorherigen Auswertung. 
+ 
 **Originale Fragestellungen und Auswertungen werden mit Bonuspunkten belohnt!** 
 
 Hier ein paar Grafiken (auch im Buch zu finden):
@@ -98,6 +116,8 @@ ggplot(diamonds,aes(x=carat,y=price,color=color)) + geom_point() + facet_wrap(~c
 
 # Noch eine Überlegung
 Haben Sie dabei explorativ oder konfirmativ gearbeitet? Was hat das für eine Auswirkung auf die Interpretation der Ergebnisse?
+
+Das Vorgehen war eher explorativ, da keine Hypothesen formuliert wurden, sondern eher offen nach Zusammenhängen geschaut wurde. Konfirmatives Vorgehen hätte gezielteren Einsatz von Tests ermöglicht, insgesamt hätten klarere Kenntnisse der Theorie und Hypothesen das Vorgehen erleichtert, eine Annahme über welches Modell es zu testen gilt. 
 
 # Lizenz
 Dieses Werk ist lizenziert unter einer CC-BY-NC-SA Lizenz.
