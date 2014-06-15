@@ -1,6 +1,7 @@
 % Hausaufgabe 16
-% Phillip Alday <phillip.alday@staff.uni-marburg.de>
-% 2014-06-11
+% Anne Dobler <doblera@students.uni-marburg.de>
+% 2014-06-12
+# Diese Datei darf weiter als Beispiel genutzt werden.
 
 Falls die Umlaute in dieser und anderen Dateien nicht korrekt dargestellt werden, sollten Sie File > Reopen with Encoding > UTF-8 sofort machen (und auf jeden Fall ohne davor zu speichern), damit die Enkodierung korrekt erkannt wird! 
 
@@ -47,7 +48,17 @@ Mögliche Ausgangsfragen sind unter anderem:
 
 *Vergessen Sie dabei nicht, dass wir bisher nur Methoden gelernt haben, wo die abhängige Variable zumindest intervallskaliert ist!*
 
+Mögliche Fragestellungen: 
+* Sinkt bzw. Schwankt die Karatzahl als Kennzahl für den Preis je nach Farbe?
+* Was bestimmt den Preis eines Diamanten?
+* Gibt es einen Zusammenhang zwischen Farbe und Karat?
+* Sind hohe Karatzahlen nur ausschlaggebend bei bestimmten Farben?
+
 Sie können sich auch [das *ggplot* Buch](http://dx.doi.org/10.1007/978-0-387-98141-3) zur Inspiration anschauen, v.a. Abbildungen 4.7, 4.8, 4.9, 5.2, 5.3, 5.4, 5.6, 5.14, 7.16, 9.1  und Kapitel 2.2-2.5 könnten inspirierend wirken. Den Code zur Erstellung der Figuren findet man immer im Haupttext.
+
+Codes: 
+library(ez)
+
 
 **Originale Fragestellungen und Auswertungen werden mit Bonuspunkten belohnt!** 
 
