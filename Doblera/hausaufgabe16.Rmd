@@ -48,16 +48,43 @@ Mögliche Ausgangsfragen sind unter anderem:
 
 *Vergessen Sie dabei nicht, dass wir bisher nur Methoden gelernt haben, wo die abhängige Variable zumindest intervallskaliert ist!*
 
-Mögliche Fragestellungen: 
-* Sinkt bzw. Schwankt die Karatzahl als Kennzahl für den Preis je nach Farbe?
-* Was bestimmt den Preis eines Diamanten?
-* Gibt es einen Zusammenhang zwischen Farbe und Karat?
-* Sind hohe Karatzahlen nur ausschlaggebend bei bestimmten Farben?
 
 Sie können sich auch [das *ggplot* Buch](http://dx.doi.org/10.1007/978-0-387-98141-3) zur Inspiration anschauen, v.a. Abbildungen 4.7, 4.8, 4.9, 5.2, 5.3, 5.4, 5.6, 5.14, 7.16, 9.1  und Kapitel 2.2-2.5 könnten inspirierend wirken. Den Code zur Erstellung der Figuren findet man immer im Haupttext.
 
-Codes: 
-library(ez)
+# Wie ist der Einfluss von Karat und Klarheit auf den Preis? Welches erklärt den Preis besser? Gibt es eine Interaktion?
+
+Plotten der Daten
+
+```{r}
+ggplot(diamonds, aes(x=carat, y=price))+geom_point()
+ggplot(diamonds, aes(x=clarity, y=price))+geom_point()
+ggplot(diamonds, aes(x=carat, y=price, color=clarity))+ geom_point()
+```
+
+Lineare Regression - Modell
+
+```{r}
+lm <- lm(price~carat * clarity,data=diamonds)
+summary(lm)
+```
+
+ANOVA für Karat/carat und Preis und für Klarheit/clarity und Preis
+
+```{r}
+ANOVA.Karat<-aov(price ~ carat, data=diamonds)
+ANOVA.Klarheit<-aov(price ~ clarity, data = diamonds)
+summary(ANOVA.Karat)
+summary(ANOVA.Klarheit)
+```
+
+Karat erklärt mehr Varianz als Klarheit. 
+
+
+ANOVA wegen Interaktionen
+```{r}
+ANOVA.KaratundKlarheit<- aov(price~carat*clarity, data = diamonds)
+summary(ANOVA.KaratundKlarheit)
+```
 
 
 **Originale Fragestellungen und Auswertungen werden mit Bonuspunkten belohnt!** 
