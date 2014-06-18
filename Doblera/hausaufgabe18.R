@@ -132,7 +132,7 @@ summary(lm.3.pyreg)
 # dass y im linearen Verhältnis zu x1 und x2 steht? Machen Sie eine Grafik wie
 # oben für y ~ x1 + x2, **nachdem Sie sich eine Antwort überlegt haben**.
 
-ggplot(linreg,aes(x=x1,y=x2)) + geom_point(aes(size=y))
+ggplot(pyreg,aes(x=x1,y=x2)) + geom_point(aes(size=y))
 
 # Glauben Sie jetzt, dass y im linearen Verhältnis zu x1 und x2 steht? Warum (nicht)?
 
@@ -147,10 +147,17 @@ cor(pyreg$y,pyreg$x2, method="spearman")
 
 # Welche Art von Korrelation macht am meisten Sinn bei diesen Daten?
 
+# Da es sich nicht um nominale skalierte Daten handelt, macht die Person Korrelation
+# mehr Sinn.
+
 # Korreliert y mit x1? y mit x2? x1 mit x2? Welche Schlussfolgerung über solche
 # Dreiecke von Variablen und ihren Korrelationen können Sie daraus ziehen?
 
+# x1 und x2 korrelieren nur leicht negativ, ebenso korrelieren y und x1 nur leicht
+# positiv, während x2 und y sehr stark positiv korrelieren. 
+
 # Welche Methode macht hier am meisten Sinn? Korrelationen oder Regression?
+
 
 # Die Daten sind übrigens *nicht* linear. x1 besteht aus 10 zufälligen Zahlen
 # zwischen [1,10] und x2 besteht aus 10 zufälligen Zahlen zwischen [1,20]. 
