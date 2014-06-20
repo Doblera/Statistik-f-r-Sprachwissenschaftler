@@ -1,6 +1,6 @@
 # Hausaufgabe 18
 % Anne Dobler <doblera@students.uni-marburg.de>
-% 2014-06-17
+% 2014-06-20
 # Diese Datei darf weiter als Beispiel genutzt werden.
 
 
@@ -52,10 +52,10 @@ ggplot(linreg,aes(x=x2,y=y)) + geom_point() + geom_smooth(method="lm")
 # wir haben y aus einfachen Summen von x1 und x2 berechnet. Wir berechnen
 # zunächst die lineare Regression für die einzelnen unabhängige Variablen.
 
-lm.x1<-lm(x1 ~ y, data=linreg)
+lm.x1<-lm(y ~ x1, data=linreg)
 summary(lm.x1)
 
-lm.x2<-lm(x2 ~ y, data=linreg)
+lm.x2<-lm(y ~ x2, data=linreg)
 summary(lm.x2)
 
 # Was haben Sie für Koeffizeinten bekommen? Wenn wir daran denken, dass x2 = 2*x1 ist, wissen wir, dass 
@@ -119,7 +119,7 @@ summary(lm.x2.pyreg)
 # Bevor Sie die Regression y ~ x1 + x2 berechnen, schauen Sie sich die
 # Korrelation (mit Konfidenzintervall!) zwischen x1 und x2 an:
 
-cor(pyreg$x1,pyreg$x2)
+cor(pyreg$x1,pyreg$x2,method="pearson")
 
 # Wenn Sie nicht miteinander signifikant korreliert sind, sollten Sie auch die
 # Regression y ~ x1 + x2 berechnen:
@@ -132,7 +132,7 @@ summary(lm.3.pyreg)
 # dass y im linearen Verhältnis zu x1 und x2 steht? Machen Sie eine Grafik wie
 # oben für y ~ x1 + x2, **nachdem Sie sich eine Antwort überlegt haben**.
 
-ggplot(pyreg,aes(x=x1,y=x2)) + geom_point(aes(size=y))
+ggplot(pyreg,aes(x=x1,y=x2)) + geom_point(aes(size=y))+geom_smooth(method="lm)")
 
 # Glauben Sie jetzt, dass y im linearen Verhältnis zu x1 und x2 steht? Warum (nicht)?
 
