@@ -1,6 +1,6 @@
 # Hausaufgabe 18
 % Anne Dobler <doblera@students.uni-marburg.de>
-% 2014-06-20
+% 2014-06-22
 # Diese Datei darf weiter als Beispiel genutzt werden.
 
 
@@ -139,11 +139,11 @@ ggplot(pyreg,aes(x=x1,y=x2)) + geom_point(aes(size=y))+geom_smooth(method="lm)")
 # Wie sieht mit Korrelationen aus? Berechnen Sie die Korrelation (sowohl Pearson
 # als auch Spearman) zwischen (y und x1) sowie auch zwischen (y und x2). 
 
-cor(pyreg$y,pyreg$x1, method="pearson")
-cor(pyreg$y,pyreg$x1, method="spearman")
+cor.test(pyreg$y,pyreg$x1, method="pearson")
+cor.test(pyreg$y,pyreg$x1, method="spearman")
 
-cor(pyreg$y,pyreg$x2, method="pearson")
-cor(pyreg$y,pyreg$x2, method="spearman")
+cor.test(pyreg$y,pyreg$x2, method="pearson")
+cor.test(pyreg$y,pyreg$x2, method="spearman")
 
 # Welche Art von Korrelation macht am meisten Sinn bei diesen Daten?
 
